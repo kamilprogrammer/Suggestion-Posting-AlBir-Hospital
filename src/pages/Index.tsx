@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 
 interface FormData {
@@ -9,7 +10,6 @@ interface FormData {
   additionalNotes: string;
   date: string;
 }
-
 const Index = () => {
   const [formData, setFormData] = useState<FormData>({
     requesterName: "",
@@ -20,10 +20,48 @@ const Index = () => {
     additionalNotes: "",
     date: new Date().toISOString().split("T")[0],
   });
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const url = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://192.168.1.18:3001/api/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
+      setIsSubmitted(true);
+      setFormData({
+        requesterName: "",
+        title: "",
+        description: "",
+        location: "",
+        issueType: "",
+        additionalNotes: "",
+        date: new Date().toISOString().split("T")[0],
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      setErrors({ ...errors, description: "فشل في إرسال النموذج." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const issueTypes = [
     { value: "", label: "اختر نوع المشكلة" },
@@ -82,42 +120,6 @@ const Index = () => {
         ...prev,
         [name]: undefined,
       }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call - replace with actual Google Sheets integration
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Here you would integrate with Google Sheets API or webhook
-      console.log("Form data to submit:", formData);
-
-      setIsSubmitted(true);
-
-      // Reset form after successful submission
-      setFormData({
-        requesterName: "",
-        title: "",
-        description: "",
-        location: "",
-        issueType: "",
-        additionalNotes: "",
-        date: new Date().toISOString().split("T")[0],
-      });
-    } catch (error) {
-      console.error("Submission error:", error);
-      // Handle error (could add error state here)
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

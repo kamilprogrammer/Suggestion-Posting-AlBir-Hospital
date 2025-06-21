@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Hospital IT Complaint Form Theme - Arabic RTL
+   * Colors are expressed as HSL values for Tailwind CSS compatibility.
+   */
+  :root {
+    /* Hospital-themed color palette */
+    --background: 248 250 252; /* slate.50 */
+    --foreground: 15 23 42; /* slate.800 */
+
+    --card: 255 255 255; /* white */
+    --card-foreground: 15 23 42; /* slate.800 */
+
+    --popover: 255 255 255; /* white */
+    --popover-foreground: 15 23 42; /* slate.800 */
+
+    --primary: 14 165 233; /* blue.500 */
+    --primary-foreground: 255 255 255; /* white */
+
+    --secondary: 241 245 249; /* slate.100 */
+    --secondary-foreground: 15 23 42; /* slate.800 */
+
+    --muted: 241 245 249; /* slate.100 */
+    --muted-foreground: 100 116 139; /* slate.500 */
+
+    --accent: 226 232 240; /* slate.200 */
+    --accent-foreground: 15 23 42; /* slate.800 */
+
+    --destructive: 239 68 68; /* red.500 */
+    --destructive-foreground: 255 255 255; /* white */
+
+    --border: 226 232 240; /* slate.200 */
+    --input: 226 232 240; /* slate.200 */
+    --ring: 14 165 233; /* blue.500 */
+
+    --radius: 0.75rem; /* Larger radius for medical/friendly feel */
+  }
+
+  /* RTL Base Styles */
+  html {
+    direction: rtl;
+  }
+
+  body {
+    @apply bg-background text-foreground font-arabic;
+    font-feature-settings:
+      "liga" 1,
+      "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Arabic typography improvements */
+  .arabic-text {
+    font-family: "Cairo", "Tajawal", "Noto Sans Arabic", "Arial", sans-serif;
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+  }
+
+  /* Form-specific styles */
+  .form-input {
+    @apply w-full px-4 py-3 text-right bg-white border border-gray-200 rounded-xl
+           text-gray-600 placeholder:text-gray-400
+           focus:border-blue-500 focus:ring-2 focus:ring-blue-100
+           transition-all duration-200;
+  }
+
+  .form-label {
+    @apply block text-gray-700 font-medium mb-2 text-right arabic-text;
+  }
+
+  .form-select {
+    @apply w-full px-4 py-3 text-right bg-white border border-gray-200 rounded-xl
+           text-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-100
+           transition-all duration-200;
+  }
+
+  .submit-button {
+    @apply w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-4 px-6
+           rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]
+           shadow-lg hover:shadow-xl arabic-text text-lg;
+  }
+
+  .success-message {
+    @apply bg-green-50 border border-green-200 text-green-600
+           px-6 py-4 rounded-xl arabic-text font-medium text-center;
+  }
+
+  /* Mobile-first responsive adjustments */
+  @media (max-width: 640px) {
+    .form-input,
+    .form-select {
+      @apply py-4 text-base;
+    }
+
+    .submit-button {
+      @apply py-5 text-xl;
+    }
+  }
+}
